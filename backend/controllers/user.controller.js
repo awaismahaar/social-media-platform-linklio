@@ -237,7 +237,7 @@ async function searchUsers(req, res) {
 }
 async function getUserProfileById(req, res) {
   try {
-    const user = await User.findById(req.params.id).select("-password -friendRequests");
+    const user = await User.findById(req.params.id).select("-password");
     if (!user) {
       return res
         .status(404)

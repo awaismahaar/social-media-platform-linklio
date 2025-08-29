@@ -208,14 +208,7 @@ const ShowAllUsers = () => {
 
                 {/* Stats */}
                 <div className="flex justify-between mb-4 text-sm">
-                    {/* <div className="text-center">
-                        <p className="font-bold text-gray-900 dark:text-white">{formatNumber(user?.followers || 0)}</p>
-                        <p className="text-gray-500 dark:text-gray-400">Posts</p>
-                    </div> */}
-                    {/* <div className="text-center">
-                        <p className="font-bold text-gray-900 dark:text-white">{formatNumber(user?.following || 0)}</p>
-                        <p className="text-gray-500 dark:text-gray-400">Friends</p>
-                    </div> */}
+    
                     <div className="text-center">
                         <p className="font-bold text-gray-900 dark:text-white">{onlineUsers.includes(user._id) ? 'Online' : 'Offline'}</p>
                         <p className="text-gray-500 dark:text-gray-400">Status</p>
