@@ -2,20 +2,14 @@ import express from "express";
 const router = express.Router();
 import { body } from "express-validator";
 import {
-  acceptFriendRequest,
   changePassword,
-  deleteFriend,
   forgotPassword,
-  getAllFriend,
-  getAllFriendRequests,
   getAllUsers,
   getUserProfile,
   login,
   logout,
   register,
-  rejectFriendRequest,
   resetPassword,
-  sendFriendRequest,
   updateAvatar,
   updateProfile,
   uploadAvatar,
@@ -57,12 +51,6 @@ router.put("/update-profile", authUser, updateProfile);
 router.post("/forget-password", forgotPassword);
 router.put("/reset-password/:token", resetPassword);
 router.put("/change-password", authUser, changePassword);
-router.get("/send-friend-request/:id", authUser, sendFriendRequest)
-router.get("/accept-friend-request/:id", authUser, acceptFriendRequest)
-router.get("/reject-friend-request/:id", authUser, rejectFriendRequest)
-router.get("/get-friend-requests", authUser, getAllFriendRequests);
-router.get("/get-all-friends", authUser, getAllFriend);
 router.get("/get-all-users", authUser, getAllUsers);
-router.delete("/delete-friend/:id", authUser, deleteFriend);
 
 export default router;

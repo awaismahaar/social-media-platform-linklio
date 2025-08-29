@@ -26,7 +26,7 @@ const userSchema = new Schema(
     },
     provider: {
       type: String,
-      enum: ["local", "google", "facebook"],
+      enum: ["local", "google"],
       default: "local",
     },
     bio: {
