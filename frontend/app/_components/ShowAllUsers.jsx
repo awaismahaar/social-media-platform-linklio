@@ -257,13 +257,6 @@ const ShowAllUsers = () => {
                         <UserCard key={user._id} user={user} />
                     ))}
                 </div>
-
-                {/* Load more button */}
-                {/* <div className="text-center mt-12">
-                    <button className="px-8 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-full font-medium transition-colors shadow-lg hover:shadow-xl">
-                        Load More Users
-                    </button>
-                </div> */}
             </div>
         </div>
 
