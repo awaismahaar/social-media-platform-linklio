@@ -17,7 +17,7 @@ export function sendEmail(to, subject, otp) {
     from: process.env.SMTP_MAIL,
     to,
     subject,
-    text: `Your OTP is ${otp}. It will expire in 5 minutes.`,
+    text: `Your OTP is ${otp}. It will expire in 15 minutes.`,
   };
   return mailOptions;
 }

@@ -27,25 +27,13 @@ const UserRightSidebar = () => {
         setShowAllUsers(allUser);
     }, [allUser]);
 
-    // Mock data for friends
-    const friends = [
-        { id: '1', name: 'Alex Johnson', username: 'alexj', avatar: 'https://images.pexels.com/photos/1674752/pexels-photo-1674752.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=1', isOnline: true, isPremium: true, mutualFriends: 12, lastSeen: 'now' },
-        { id: '6', name: 'Jessica Park', username: 'jesspark', avatar: 'https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=1', isOnline: true, mutualFriends: 8, lastSeen: 'now' },
-        { id: '7', name: 'Robert Wilson', username: 'robw', avatar: 'https://images.pexels.com/photos/1516680/pexels-photo-1516680.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=1', isOnline: false, mutualFriends: 5, lastSeen: '2h ago' },
-        { id: '8', name: 'Lisa Garcia', username: 'lisag', avatar: 'https://images.pexels.com/photos/1858175/pexels-photo-1858175.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=1', isOnline: true, mutualFriends: 15, lastSeen: 'now' },
-    ];
 
     const handleNavigateToUsers = () => {
         router.push('/users');
     };
 
-    const handleNavigateToFriends = () => {
-        router.push('/friends');
-    };
     const UserCard = ({
         user,
-        showMutualFriends = false,
-        mutualFriends = 0
     }) => (
         <Link href={`/profile/${user._id}`}>
             <div className="group flex items-center space-x-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-all duration-200 cursor-pointer">
@@ -70,11 +58,7 @@ const UserRightSidebar = () => {
                     <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
                         @{user.username}
                     </p>
-                    {showMutualFriends && (
-                        <p className="text-xs text-blue-600 dark:text-blue-400">
-                            {mutualFriends} mutual friends
-                        </p>
-                    )}
+        
                 </div>
 
 
@@ -119,50 +103,7 @@ const UserRightSidebar = () => {
                             </div>
                         </div>
                     </div>
-
-                    {/* Friends Section */}
-                    {/* <div className="flex-1 max-h-76 overflow-y-auto border-t border-gray-200 dark:border-gray-800">
-                    <div className="p-4">
-                        <div className="flex items-center justify-between mb-4">
-                            <div className="flex items-center space-x-2">
-                                <UserPlus className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                                    Friends
-                                </h3>
-                                <span className="bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-xs px-2 py-1 rounded-full">
-                                    {friends.length}
-                                </span>
-                            </div>
-                            <button
-                                onClick={handleNavigateToFriends}
-                                className="flex items-center space-x-1 text-sm text-purple-600 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-300 transition-colors"
-                            >
-                                <span>View All</span>
-                                <ChevronRight className="w-4 h-4" />
-                            </button>
-                        </div>
-
-                        <div className="space-y-1">
-                            {friends.slice(0, 4).map((friend) => (
-                                <UserCard
-                                    key={friend.id}
-                                    user={friend}
-                                    showMutualFriends={true}
-                                    mutualFriends={friend.mutualFriends}
-                                />
-                            ))}
-                        </div>
-                    </div>
-                </div> */}
                 </div>
-
-                {/* Footer */}
-                {/* <div className="p-4 border-t border-gray-200 dark:border-gray-800">
-                <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
-                    <span>{allUsers.filter(u => u.isOnline).length} online</span>
-                    <span>{friends.length} friends</span>
-                </div>
-            </div> */}
             </div>
         </div>
 

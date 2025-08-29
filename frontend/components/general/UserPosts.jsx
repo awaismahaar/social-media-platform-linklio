@@ -168,7 +168,7 @@ const UserPosts = ({ post, onImageClick, onCommentClick, setChangePosts }) => {
             group-hover:scale-105
           "
                                 />
-                                <div className="absolute inset-0 w-full h-full rounded-lg bg-black/0 group-hover:bg-black/40 transition-all duration-300 z-10" />
+                                <div className="absolute inset-0 w-full h-full rounded-lg transition-all duration-300 z-10" />
                             </div>
                         ))}
                     </div>
@@ -197,21 +197,8 @@ const UserPosts = ({ post, onImageClick, onCommentClick, setChangePosts }) => {
                                 <span className="text-sm font-medium">{post?.comments?.length}</span>
                             </button>
 
-                            {/* <button className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-green-500 transition-all duration-300 hover:scale-110">
-                                <p className="text-sm font-medium">Share</p>
-                                <Share size={20} />
-
-                            </button> */}
+                          
                         </div>
-
-                        {/* <button
-                            onClick={handleSave}
-                            className={`transition-all flex items-center gap-1 duration-300 hover:scale-110 ${isSaved ? 'text-blue-500' : 'text-gray-600 dark:text-gray-400 hover:text-blue-500'
-                                }`}
-                        >
-                            <p className="text-sm font-medium">Save</p>
-                            <Bookmark size={20} fill={isSaved ? 'currentColor' : 'none'} />
-                        </button> */}
                     </div>
                 </div>
             </div>

@@ -58,7 +58,7 @@ async function register(req, res) {
 
     // Generate and store OTP
     const otp = generateOTP();
-    const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 min expiry
+    const expiresAt = new Date(Date.now() + 15 * 60 * 1000); // 15 min expiry
 
     // Delete previous OTPs
     await Otp.deleteMany({ email });
@@ -478,201 +478,11 @@ async function changePassword(req, res) {
   }
 }
 
-async function sendFriendRequest(req, res) {
-  try {
-    const sender = await User.findById(req.user.userId);
-    const receiver = await User.findById(req.params.id);
-    if (!sender || !receiver) {
-      return res.status(404).json({
-        success: false,
-        message: "Sender or receiver not found",
-      });
-    }
-    if (sender._id.toString() === receiver._id.toString()) {
-      return res.status(400).json({
-        success: false,
-        message: "You cannot send a friend request to yourself",
-      });
-    }
-    const isExistingFriendRequest = receiver.friendRequests.includes(sender._id);
-    if (isExistingFriendRequest) {
-      return res.status(400).json({
-        success: false,
-        message: "Friend request already sent",
-      });
-    }
-    // Add sender to receiver's friend requests
-    receiver.friendRequests.push(sender._id);
-    await receiver.save();
-    res.status(200).json({
-      success: true,
-      message: "Friend request sent successfully",
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Internal Server Error",
-      msgError: error.message,
-    });
-  }
-}
-
-async function acceptFriendRequest(req, res) {
-  try {
-    const sender = await User.findById(req.user.userId);
-    const receiver = await User.findById(req.params.id);
-    if (!sender || !receiver) {
-      return res.status(404).json({
-        success: false,
-        message: "Sender or receiver not found",
-      });
-    }
-    if (sender.friendRequests.includes(receiver._id)) {
-      sender.friendRequests.pull(receiver._id);
-      sender.friends.push(receiver._id);
-      receiver.friends.push(sender._id);
-      // Save both users after updating their friend lists
-      await receiver.save();
-      await sender.save();
-      return res.status(200).json({
-        success: true,
-        message: "Friend request accepted",
-      });
-    } else {
-      return res.status(400).json({
-        success: false,
-        message: "No friend request found",
-      });
-    }
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Internal Server Error",
-      msgError: error.message,
-    });
-  }
-}
-
-async function rejectFriendRequest(req, res) {
-  try {
-    const sender = await User.findById(req.user.userId);
-    const receiver = await User.findById(req.params.id);
-    if (!sender || !receiver) {
-      return res.status(404).json({
-        success: false,
-        message: "Sender or receiver not found",
-      });
-    }
-    if (sender.friendRequests.includes(receiver._id)) {
-      sender.friendRequests.pull(receiver._id);
-      await sender.save();
-      return res.status(200).json({
-        success: true,
-        message: "Friend request rejected",
-      });
-    } else {
-      return res.status(400).json({
-        success: false,
-        message: "No friend request found",
-      });
-    }
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Internal Server Error",
-      msgError: error.message,
-    });
-  }
-}
-
-async function getAllFriendRequests(req, res) {
-  try {
-    const user = await User.findById(req.user.userId).populate("friendRequests", "-password -friendRequests -friends");
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found",
-      });
-    }
-    res.status(200).json({
-      success: true,
-      friendRequests: user.friendRequests,
-    })
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Internal Server Error",
-      msgError: error.message,
-    });
-  }
-}
-
-async function getAllFriend(req, res) {
-  try {
-    const user = await User.findById(req.user.userId).populate("friends", "-password -friendRequests -friends");
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found",
-      });
-    }
-    res.status(200).json({
-      success: true,
-      friends: user.friends,
-    })
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Internal Server Error",
-      msgError: error.message,
-    });
-
-  }
-}
-
-async function deleteFriend(req, res) {
-  try {
-    const user = await User.findById(req.user.userId);
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found",
-      });
-    }
-    const friendId = req.params.id;
-    if (!user.friends.includes(friendId)) {
-      return res.status(400).json({
-        success: false,
-        message: "You are not friends with this user",
-      });
-    }
-    user.friends.pull(friendId);
-    await user.save();
-    res.status(200).json({
-      success: true,
-      message: "Friend deleted successfully",
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Internal Server Error",
-      msgError: error.message,
-    });
-  }
-}
-
 async function getAllUsers(req, res) {
   try {
     const users = await User.find({ _id: { $ne: req.user.userId } })
-      .select("-password -friendRequests")
+      .select("-password")
       .sort({ createdAt: -1 });
-      // Get posts count for each user
-      // users.forEach(async (user) => {
-      //     user.posts = 0;
-      //     const counts = await Post.find({ author : user._id }).countDocuments();
-      //     console.log(counts);
-      //     user.posts = counts;
-      // });
     res.status(200).json({
       success: true,
       users,
@@ -696,12 +506,6 @@ export {
   forgotPassword,
   resetPassword,
   changePassword,
-  sendFriendRequest,
-  acceptFriendRequest,
-  rejectFriendRequest,
-  getAllFriendRequests,
-  getAllFriend,
-  deleteFriend,
   getAllUsers,
   socialLogin,
   getUserProfileById,

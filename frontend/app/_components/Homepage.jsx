@@ -20,7 +20,7 @@ const Homepage = () => {
     const [selectedImage, setSelectedImage] = useState(null)
     const [selectedPost, setSelectedPost] = useState(null)
     const [isOpen, setIsOpen] = useState(false);
-    const [changePosts, setChangePosts] = useState(null);
+    const [changePosts, setChangePosts] = useState(false);
     const handleImageClick = (image) => {
         setSelectedImage(image);
     };
@@ -36,7 +36,7 @@ const Homepage = () => {
     const handleCloseCommentModal = () => {
         setIsOpen(false);
         setSelectedPost(null);
-        setChangePosts(true);
+        setChangePosts(!changePosts);
     };
     const { allPosts, loading } = useAllPosts(changePosts, postUpload);
     const [showAllPosts, setShowAllPosts] = useState(allPosts || []);

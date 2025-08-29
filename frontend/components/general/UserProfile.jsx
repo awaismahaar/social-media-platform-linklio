@@ -23,7 +23,7 @@ const UserProfile = ({ id }) => {
   const [avatarModalOpen, setAvatarModalOpen] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null);
   const [avatarFile, setAvatarFile] = useState(null);
-  const {allUserPosts,loading : postsLoading} = useAllUserPosts(changeUserPosts, id);
+  const { allUserPosts, loading: postsLoading } = useAllUserPosts(changeUserPosts, id);
   const [isLoading, setIsLoading] = useState(true);
   const [userPosts, setUserPosts] = useState(allUserPosts || []);
   const [userProfile, setUserProfile] = useState(null);
@@ -36,7 +36,7 @@ const UserProfile = ({ id }) => {
   useEffect(() => {
     setUserPosts(allUserPosts);
   }, [allUserPosts, changeUserPosts])
-  
+
 
 
   const handleImageClick = (image) => {
@@ -68,7 +68,7 @@ const UserProfile = ({ id }) => {
         withCredentials: true,
         headers: {
           "Content-Type": "application/json",
-           "Authorization" : `Bearer ${localStorage.getItem("auth-token") && JSON.parse(localStorage.getItem("auth-token"))}`
+          "Authorization": `Bearer ${localStorage.getItem("auth-token") && JSON.parse(localStorage.getItem("auth-token"))}`
         }
       });
       if (res.data.success) {
@@ -99,7 +99,7 @@ const UserProfile = ({ id }) => {
         withCredentials: true,
         headers: {
           "Content-Type": "multipart/form-data",
-           "Authorization" : `Bearer ${localStorage.getItem("auth-token") && JSON.parse(localStorage.getItem("auth-token"))}`
+          "Authorization": `Bearer ${localStorage.getItem("auth-token") && JSON.parse(localStorage.getItem("auth-token"))}`
         }
       });
       if (res.data.success) {
@@ -117,14 +117,14 @@ const UserProfile = ({ id }) => {
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     async function getUserProfileById() {
       try {
         const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/get-profile-by-id/${id}`, {
           withCredentials: true,
           headers: {
             "Content-Type": "application/json",
-             "Authorization" : `Bearer ${localStorage.getItem("auth-token") && JSON.parse(localStorage.getItem("auth-token"))}`
+            "Authorization": `Bearer ${localStorage.getItem("auth-token") && JSON.parse(localStorage.getItem("auth-token"))}`
           }
         });
         if (res.data.success) {
@@ -134,12 +134,12 @@ const UserProfile = ({ id }) => {
       catch (error) {
         toast.error(error?.response?.data?.message || "Something went wrong");
       }
-      finally{
-         setIsLoading(false);
+      finally {
+        setIsLoading(false);
       }
     }
     getUserProfileById();
-  },[id]);
+  }, [id]);
 
 
   // If no user is found, show loading state
@@ -166,14 +166,14 @@ const UserProfile = ({ id }) => {
         <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
           {/* Profile Picture */}
           <div onClick={() => userProfile?._id === user?._id && setAvatarModalOpen(true)} className="relative group">
-            <div onClick={()=> userProfile?._id !== user?._id && handleImageClick(userProfile?.avatar?.url || "https://cdn-icons-png.flaticon.com/512/149/149071.png")} className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-gray-200 dark:border-gray-600 transition-all duration-300 group-hover:border-blue-500">
+            <div onClick={() => userProfile?._id !== user?._id && handleImageClick(userProfile?.avatar?.url || "https://cdn-icons-png.flaticon.com/512/149/149071.png")} className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-gray-200 dark:border-gray-600 transition-all duration-300 group-hover:border-blue-500">
               <img
                 src={userProfile?._id === user?._id ? user?.avatar?.url || "https://cdn-icons-png.flaticon.com/512/149/149071.png" : userProfile?.avatar?.url || "https://cdn-icons-png.flaticon.com/512/149/149071.png"}
                 alt={`${userProfile?._id === user?._id ? user.fullName : userProfile?.fullName}'s profile`}
                 className="w-full h-full object-cover"
               />
             </div>
-            { userProfile?._id === user?._id && <button className="absolute bottom-2 right-2 w-10 h-10 bg-blue-500 hover:bg-blue-600 rounded-full flex items-center justify-center text-white shadow-lg transition-all duration-300 hover:scale-110">
+            {userProfile?._id === user?._id && <button className="absolute bottom-2 right-2 w-10 h-10 bg-blue-500 hover:bg-blue-600 rounded-full flex items-center justify-center text-white shadow-lg transition-all duration-300 hover:scale-110">
               <Camera size={20} />
             </button>}
           </div>
@@ -185,7 +185,7 @@ const UserProfile = ({ id }) => {
                 <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
                   {userProfile?._id === user?._id ? user.fullName : userProfile?.fullName}
                 </h1>
-                {(userProfile?._id === user?._id ? user.isVerified :  userProfile?.isVerified) && <VerifiedIcon className="text-blue-500 w-6 h-6" />}
+                {(userProfile?._id === user?._id ? user.isVerified : userProfile?.isVerified) && <VerifiedIcon className="text-blue-500 w-6 h-6" />}
               </div>
               <p className="text-gray-600 dark:text-gray-400 text-lg">@{userProfile?._id === user?._id ? user.username : userProfile?.username}</p>
             </div>
@@ -193,13 +193,10 @@ const UserProfile = ({ id }) => {
             {/* Stats */}
             <div className="flex justify-center md:justify-start gap-6 mb-4">
               <div className="text-center">
-                <div className="text-xl font-bold text-gray-900 dark:text-white">{userPosts.length || 0 }</div>
+                <div className="text-xl font-bold text-gray-900 dark:text-white">{userPosts.length || 0}</div>
                 <div className="text-sm text-gray-600 dark:text-gray-400">Posts</div>
               </div>
-              <div className="text-center">
-                <div className="text-xl font-bold text-gray-900 dark:text-white">{userProfile?._id === user?._id ? user.friends.length : userProfile?.friends.length}</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">Friends</div>
-              </div>
+
 
             </div>
 
@@ -209,24 +206,14 @@ const UserProfile = ({ id }) => {
             </p>
 
             {/* Action Buttons */}
-            {user._id === id ?
+            {user._id === id &&
               <div className="flex justify-center md:justify-start">
                 <button onClick={() => setOpen(true)} className="flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-full font-medium transition-all duration-300 hover:scale-105 shadow-lg">
                   <Edit size={20} />
                   Edit Profile
                 </button>
               </div>
-              :
-              <div className="flex flex-col sm:flex-row gap-3">
-                <button className="flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-full font-medium transition-all duration-300 hover:scale-105 shadow-lg">
-                  <MessageCircle size={20} />
-                  Message
-                </button>
-                <button className="flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 px-6 py-3 rounded-full font-medium transition-all duration-300 hover:scale-105">
-                  <UserPlus size={20} />
-                  Add Friend
-                </button>
-              </div>}
+              }
           </div>
         </div>
       </div>

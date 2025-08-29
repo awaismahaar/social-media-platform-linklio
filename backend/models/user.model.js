@@ -44,14 +44,6 @@ const userSchema = new Schema(
       },
     },
     isVerified: { type: Boolean, default: false },
-    friends: {
-      type: [Schema.Types.ObjectId],
-      ref: "User",
-    },
-    friendRequests: {
-      type: [Schema.Types.ObjectId],
-      ref: "User",
-    },
   },
   { timestamps: true }
 );

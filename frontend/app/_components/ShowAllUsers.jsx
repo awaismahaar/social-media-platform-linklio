@@ -183,8 +183,8 @@ const ShowAllUsers = () => {
 
                             <DropdownMenuItem onClick={() => {
                                 router.push(`/profile/${user?._id}`)
-                            }}><UserPen className="mr-2 h-4 w-4" />See profile</DropdownMenuItem>
-                            <DropdownMenuItem><MessageCircle className="mr-2 h-4 w-4" />Chat</DropdownMenuItem>
+                            }}><UserPen className="mr-2 h-4 w-4" />User Profile</DropdownMenuItem>
+                            
 
                         </DropdownMenuContent>
                     </DropdownMenu>
